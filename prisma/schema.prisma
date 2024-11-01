@@ -71,7 +71,9 @@ model VerificationToken {
 model Blog {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   title    String
+  subtitle String
   content  String
+  createdAt DateTime @default(now())
   author   User   @relation(fields: [authorId], references: [id])
   authorId String @db.ObjectId
 }

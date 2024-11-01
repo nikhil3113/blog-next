@@ -19,13 +19,16 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(NEXT_AUTH)
-    console.log(session)
+    if(!session){
+      return NextResponse.redirect("/")
+    }
     const body = await req.json();
-    const { title, content } = body;
+    const { title, content, subtitle } = body;
     await prisma.blog.create({
       data: {
         title,
         content,
+        subtitle,
         authorId: session.user.id
       },
     });
