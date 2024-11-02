@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,9 +27,25 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useState } from "react";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { TooltipDemo } from "@/components/TooltipComponent";
+
+import dynamic from "next/dynamic";
+
+interface CKEditorProps {
+  editor: typeof ClassicEditor;
+  data: string;
+  onChange: (_: any, editor: any) => void;
+}
+
+const CKEditor = dynamic<CKEditorProps>(
+  () => import("@ckeditor/ckeditor5-react").then((mod) => mod.CKEditor) as any,
+  { ssr: false }
+);
+
+const ClassicEditor = dynamic(
+  () => import("@ckeditor/ckeditor5-build-classic").then((mod) => mod.default) as any,
+  { ssr: false }
+);
 
 const formSchema = z.object({
   title: z
