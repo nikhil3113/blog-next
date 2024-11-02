@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth";
-import { NEXT_AUTH } from "@/lib/auth";
+import  {NEXT_AUTH}  from "@/lib/auth";
 import UserMenu from "@/components/UserMenu";
 
 async function getUser() {

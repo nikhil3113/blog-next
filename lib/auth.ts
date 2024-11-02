@@ -2,7 +2,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/db";
 
-export const NEXT_AUTH = {
+ export const NEXT_AUTH = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -27,3 +27,4 @@ export const NEXT_AUTH = {
     signIn: "/signin",
   },
 };
+

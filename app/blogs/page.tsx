@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import prisma from "@/db";
-import { NEXT_AUTH } from "@/lib/auth";
+import  {NEXT_AUTH}  from "@/lib/auth";
 import { CirclePlus } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
