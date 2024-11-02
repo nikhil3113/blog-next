@@ -1,14 +1,12 @@
 import prisma from "@/db";
-import { NEXT_AUTH } from "@/lib/auth";
-import { getServerSession } from "next-auth";
 import Head from "next/head";
 
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 const getBlogById = async (id: string) => {
-  const session = await getServerSession(NEXT_AUTH);
-  if (!session) {
-    redirect("/");
-  }
+  // const session = await getServerSession(NEXT_AUTH);
+  // if (!session) {
+  //   redirect("/");
+  // }
   try {
     const blog = await prisma.blog.findUnique({
       where: { id },
@@ -38,11 +36,11 @@ export default async function GetBlogById({
       </Head>
       <div className="mt-10">
         <div className="my-10 flex flex-col justify-center items-center max-sm:px-5">
-          <h1 className=" font-semibold text-3xl ">{blog.title}</h1>
+          <h1 className=" font-bold text-4xl text-black ">{blog.title}</h1>
           <h2 className=" font-medium text-xl">{blog.subtitle}</h2>
         </div>
         <div
-          className="px-20 md:px-60 lg:px-72"
+          className="px-10 md:px-60 lg:px-72 my-10"
           dangerouslySetInnerHTML={{ __html: blog.content }}
         />
       </div>

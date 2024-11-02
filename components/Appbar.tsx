@@ -1,7 +1,7 @@
+import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { NEXT_AUTH } from "@/lib/auth";
-import SessionButton from "./SessionButton";
-import Link from "next/link";
+import UserMenu from "@/components/UserMenu";
 
 async function getUser() {
   const session = await getServerSession(NEXT_AUTH);
@@ -12,14 +12,29 @@ export default async function Appbar() {
   const session = await getUser();
 
   return (
-    <div className="flex justify-between p-5 shadow-md">
-      <Link href={"/"} className="text-xl font-semibold ">Blog App</Link>
-      <div className="flex justify-evenly items-center gap-5">
-        <Link href={"/blogs"} className="font-semibold text-xl ">
-          Blogs
-        </Link>
-        <SessionButton session={session} />
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between px-16">
+        <div className="flex items-center gap-6 md:gap-8">
+          <Link href="/" className="flex items-center space-x-2">
+            <span className="text-xl font-bold">Blogext</span>
+          </Link>
+          <nav className="hidden md:flex space-x-6">
+            <Link
+              href="/"
+              className="font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Home
+            </Link>
+            <Link
+              href="/blogs"
+              className="font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Blogs
+            </Link>
+          </nav>
+        </div>
+        <UserMenu session={session} />
       </div>
-    </div>
+    </header>
   );
 }
