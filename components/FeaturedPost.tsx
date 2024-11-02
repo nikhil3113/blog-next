@@ -33,7 +33,7 @@ export default async function FeaturedPost() {
   const blogs = await getBlogs();
   return (
     <div className="my-10">
-    <h1>Featured Post</h1>
+      <h1>Featured Post</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-5 gap-8">
         {blogs?.map((blog) => (
           <Card key={blog.id} className="px-5 flex flex-col h-full">
@@ -55,9 +55,9 @@ export default async function FeaturedPost() {
               {trimContent(blog.subtitle, 15)}
             </CardContent>
             <CardFooter className="flex justify-between items-center mt-auto">
-              <Button>
-                <Link href={`/blogs/${blog.id}`}>Read More</Link>
-              </Button>
+              <Link href={`/blogs/${blog.id}`}>
+                <Button>Read More</Button>
+              </Link>
               <p className="text-muted-foreground text-sm">
                 {blog.createdAt.toDateString()}
               </p>
