@@ -26,26 +26,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TooltipDemo } from "@/components/TooltipComponent";
-
-import dynamic from "next/dynamic";
-
-interface CKEditorProps {
-  editor: typeof ClassicEditor;
-  data: string;
-  onChange: (_: any, editor: any) => void;
-}
-
-const CKEditor = dynamic<CKEditorProps>(
-  () => import("@ckeditor/ckeditor5-react").then((mod) => mod.CKEditor) as any,
-  { ssr: false }
-);
-
-const ClassicEditor = dynamic(
-  () => import("@ckeditor/ckeditor5-build-classic").then((mod) => mod.default) as any,
-  { ssr: false }
-);
+import Loader from "@/components/Loader";
 
 const formSchema = z.object({
   title: z
@@ -63,6 +46,23 @@ const formSchema = z.object({
 export default function CreateBlog() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+
+  const editorRef = useRef<{ CKEditor: any; ClassicEditor: any } | null>(null);
+  const [editorLoaded, setEditorLoaded] = useState(false);
+  const { CKEditor, ClassicEditor } = editorRef.current || {};
+
+  useEffect(() => {
+    async function loadEditor() {
+      editorRef.current = {
+        CKEditor: (await import("@ckeditor/ckeditor5-react")).CKEditor,
+        ClassicEditor: (await import("@ckeditor/ckeditor5-build-classic"))
+          .default,
+      };
+      setEditorLoaded(true);
+    }
+    loadEditor();
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -85,6 +85,10 @@ export default function CreateBlog() {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  if (!editorLoaded) {
+    return <Loader />;
   }
 
   return (
@@ -156,7 +160,7 @@ export default function CreateBlog() {
                     <CKEditor
                       editor={ClassicEditor}
                       data={field.value}
-                      onChange={(_, editor) => {
+                      onChange={(_: any, editor: any) => {
                         field.onChange(editor.getData());
                       }}
                     />

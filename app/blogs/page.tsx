@@ -1,3 +1,4 @@
+import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import prisma from "@/db";
@@ -29,7 +30,11 @@ export default async function Blogs() {
   const blogs = await getBlogs();
   const session = await getServerSession(NEXT_AUTH);
 
-  // console.log(blogs);
+  if (!blogs) {
+    return <Loader/>;
+  }
+
+
   return (
     <div>
       <div className="flex justify-between items-center">
